@@ -1,24 +1,32 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
-export default class Demo extends Phaser.Scene {
-  constructor() {
-    super('GameScene');
-  }
+export default class Game extends Phaser.Scene {
+	private cursor!: Phaser.Types.Input.Keyboard.CursorKeys;
+	private player!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
 
-  preload() {
-    this.load.image('logo', 'assets/phaser3-logo.png');
-  }
+	constructor() {
+		super("GameScene");
+	}
 
-  create() {
-    const logo = this.add.image(400, 70, 'logo');
+	preload() {
+		this.load.image("paddle", "./assets/Paddle.png");
+	}
 
-    this.tweens.add({
-      targets: logo,
-      y: 350,
-      duration: 1500,
-      ease: 'Sine.inOut',
-      yoyo: true,
-      repeat: -1
-    });
-  }
+	create() {
+		this.player = this.physics.add.image(400, 570, "paddle");
+
+		// const bricks = this.add.group()
+
+		this.cursor = this.input.keyboard.createCursorKeys();
+		this.player.setCollideWorldBounds(true);
+	}
+
+	update() {
+		if (this.cursor.right.isDown) {
+			if (typeof this.player.x == "number") this.player.x += 6;
+		}
+		if (this.cursor.left.isDown) {
+			if (typeof this.player.x == "number") this.player.x -= 6;
+		}
+	}
 }
